@@ -4,11 +4,11 @@ int main () {
     for(x;x<=100;x++) {
         if (x%2==0) {
             printf("%d",x);
-             printf("even\n");
+             printf("   even\n");
         }
         else {
              printf("%d",x);
-              printf("odd\n");
+              printf("  odd\n");
         }
     }
  return (0) ;
