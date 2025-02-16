@@ -18,8 +18,11 @@ class Hospital:
         return doctors_by_spec
     @classmethod
     def get_all_doctors (cls):
-        for i in cls.all_doctors:
-            print(f"{i} from {cls.all_doctors[i]}")
+        if cls.all_doctors=={}:
+            print("We dont have doctors available")
+        else:
+            for i in cls.all_doctors:
+                print(f"{i} from {cls.all_doctors[i]}")
     @classmethod
     def get_schedule(cls,name):
         check_list=2
@@ -50,40 +53,61 @@ while True:
     try:
         commnd = input("How can I help you : ")
         if commnd == "add doctor" or commnd == "1":
+            check_name = 1
+            check_spec = 1
             name_doctor = input("Please enter the doctors name : ")
-            spec_doctor = input("Enter his specializion : ")
-            new_doctor = Hospital(name_doctor,spec_doctor)
-            print("The doctor has added successfully")
+            for i in name_doctor:
+                if not (i>='a'and i<='z'  or  i>='A'and i<='Z'  or  i==' '):
+                    check_name=0
+            if check_name:
+                spec_doctor = input("Enter his specializion : ")
+                for i in spec_doctor:
+                    if not (i>='a'and i<='z'  or  i>='A'and i<='Z'  or  i==' '):
+                        check_spec=0
+                if check_spec:
+                    new_doctor = Hospital(name_doctor,spec_doctor)
+                    print("The doctor has added successfully")
+                else:
+                    print("The specialization must consist of letters only")
+            else:
+                print("The name of doctor must consist of letters only")
         
         elif commnd == "get doctor by specialization" or commnd == "2":
             spec_doctor = input("Enter the specialization you want : ")
             print(Hospital.get_doctors_by_spec(spec_doctor))
         
         elif commnd == "book an appointment" or commnd == "3":
-            name_patient = input("Enter the patient name ")
-            name_doctor = input("Which doctor you want to book with ")
+            check_name=1
             check_date=1
             check_doctor = 0
-            for i in Hospital.appointments_doctors:
-                if name_doctor == i :
-                    check_doctor=1
-                    date = int(input("Enter the time out of 24 hours "))
-                    if date >=0 and date < 24 :
-                        if Hospital.appointments_doctors[i] == "hasn't appointment":
-                                Hospital.appointments_doctors[i]=['name','date ->']
-                        for j in Hospital.appointments_doctors[i]:
-                            if j == date:
-                                check_date=0
-                        if check_date==1:
-                            Hospital.appointments_doctors[i].append(name_patient)
-                            Hospital.appointments_doctors[i].append(date)
-                            print("appointment has booked successfully ")
+            name_patient = input("Enter the patient name ")
+            for i in name_patient:
+                    if not (i>='a'and i<='z'  or  i>='A'and i<='Z'  or  i==' '):
+                        check_name=0
+            if check_name:
+                name_doctor = input("Which doctor you want to book with ")
+                for i in Hospital.appointments_doctors:
+                    if name_doctor == i :
+                        check_doctor=1
+                        date = int(input("Enter the time out of 24 hours "))
+                        if date >=0 and date < 24 :
+                            if Hospital.appointments_doctors[i] == "hasn't appointment":
+                                    Hospital.appointments_doctors[i]=['name','date ->']
+                            for j in Hospital.appointments_doctors[i]:
+                                if j == date:
+                                    check_date=0
+                            if check_date==1:
+                                Hospital.appointments_doctors[i].append(name_patient)
+                                Hospital.appointments_doctors[i].append(date)
+                                print("appointment has booked successfully ")
+                            else:
+                                print("The appointment is reserved ")
                         else:
-                            print("The appointment is reserved ")
-                    else:
-                        print ("The time must be between 0 to 23")
-            if check_doctor == 0:
-                print("Sorry the doctor is not found ")
+                            print ("The time must be between 0 to 23")
+                if check_doctor == 0:
+                    print("Sorry the doctor is not found ")
+            else:
+                print("The name of patient must consist of letters only")
         
         elif commnd=="get list of all doctors" or commnd == "4":
             Hospital.get_all_doctors()
